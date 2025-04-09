@@ -1,8 +1,6 @@
 import gymnasium
 import ale_py
 
-gymnasium.register_envs(ale_py)
-
 
 def main():
     env = gymnasium.make("ALE/Pong-v5", render_mode="human")
