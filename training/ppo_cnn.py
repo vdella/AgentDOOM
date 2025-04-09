@@ -1,21 +1,17 @@
-import torch
-import numpy as np
 import gymnasium as gym
+import numpy as np
+import torch
 from gymnasium.wrappers import AtariPreprocessing
 from gymnasium.wrappers import FrameStackObservation
-
-from models.cnn_encoder import CNNEncoder
-from models.actor_critic import ActorCritic
 import ale_py
 
-import csv
-import os
-
 from agents.ppo_agent import PPOAgent
+from models.actor_critic import ActorCritic
+from models.cnn_encoder import CNNEncoder
 
 
 def make_tetris_env():
-    env = gym.make("ALE/Tetris-v5", render_mode="human")
+    env = gym.make("ALE/Tetris-v5", render_mode=None)
 
     env = AtariPreprocessing(
         env,
@@ -37,7 +33,7 @@ def preprocess(obs):
     return obs.unsqueeze(0)  # [1, 4, 84, 84]
 
 
-def run(steps=1000):
+def run(steps=10000, log_path="../logs/ppo_cnn.csv"):
     env = make_tetris_env()
     obs_space = env.observation_space.shape
     num_actions = env.action_space.n
@@ -56,13 +52,13 @@ def run(steps=1000):
         clip_eps=0.2,
         k_epochs=4,
         batch_size=64,
-        total_timesteps=10_000
+        total_timesteps=steps
     )
 
-    agent.train(preprocess)
+    agent.train(preprocess, log_path=log_path)
 
     env.close()
 
 
 if __name__ == "__main__":
-    run()
+    run(steps=500000)

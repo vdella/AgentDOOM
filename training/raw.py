@@ -1,7 +1,12 @@
-from __init__ import env, epochs
+import gymnasium as gym
+import ale_py
 
 
-def raw_exec():
+env = gym.make("ALE/Tetris-v5", render_mode="human")
+epochs = 10000
+
+
+def run():
     """Shows the execution of the rawest version
     of a game -- without PPO-CNNs and PPO-ViTs."""
 
@@ -19,4 +24,4 @@ def raw_exec():
 
 
 if __name__ == "__main__":
-    raw_exec()
+    run()

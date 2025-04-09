@@ -48,7 +48,7 @@ class PPOAgent:
             action = dist.sample()
             return action.item(), dist.log_prob(action).item(), value.item()
 
-    def train(self, preprocess, log_path="../logs/cnn_ppo_tetris.csv", save_every=10000):
+    def train(self, preprocess, log_path, save_every=10000):
 
         buffer = RolloutBuffer()
         state, _ = self.env.reset()
