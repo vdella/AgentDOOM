@@ -2,6 +2,8 @@ import torch
 import torch.nn.functional as F
 import numpy as np
 from collections import deque
+import os
+import csv
 
 class RolloutBuffer:
     def __init__(self):
@@ -26,18 +28,7 @@ def compute_gae(rewards, values, is_terminals, gamma=0.99, lam=0.95):
     return advantages
 
 class PPOAgent:
-    def __init__(
-            self,
-            model,
-            env,
-            lr=2.5e-4,
-            gamma=0.99,
-            lam=0.95,
-            clip_eps=0.2,
-            k_epochs=4,
-            batch_size=64,
-            total_timesteps=1e6
-    ):
+    def __init__(self, model, env, lr=2.5e-4, gamma=0.99, lam=0.95, clip_eps=0.2, k_epochs=4, batch_size=64, total_timesteps=1e6):
         self.model = model
         self.env = env
         self.optimizer = torch.optim.Adam(model.parameters(), lr=lr)
@@ -57,7 +48,8 @@ class PPOAgent:
             action = dist.sample()
             return action.item(), dist.log_prob(action).item(), value.item()
 
-    def train(self, preprocess):
+    def train(self, preprocess, log_path="../logs/cnn_ppo_tetris.csv", save_every=10000):
+
         buffer = RolloutBuffer()
         state, _ = self.env.reset()
         ep_rewards = deque(maxlen=100)
@@ -91,7 +83,6 @@ class PPOAgent:
                 )
                 returns = [adv + val for adv, val in zip(advantages, buffer.values)]
 
-                # Convert to tensors
                 states = torch.stack([preprocess(s).squeeze(0) for s in buffer.states])
                 actions = torch.LongTensor(buffer.actions)
                 old_logprobs = torch.FloatTensor(buffer.logprobs)
@@ -127,3 +118,13 @@ class PPOAgent:
                 buffer.clear()
                 avg_reward = np.mean(ep_rewards) if ep_rewards else 0
                 print(f"Step: {t+1}, AvgReward (last 100): {avg_reward:.2f}")
+
+                # Log reward to CSV
+                with open(log_path, "a", newline="") as f:
+                    writer = csv.writer(f)
+                    writer.writerow([t + 1, avg_reward])
+
+                # Save checkpoint
+                if (t + 1) % save_every == 0:
+                    ckpt_path = f"checkpoints/ppo_cnn_step_{t + 1}.pt"
+                    torch.save(self.model.state_dict(), ckpt_path)
