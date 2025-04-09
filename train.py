@@ -8,8 +8,7 @@ epochs = 10000
 
 def raw_exec():
     """Shows the execution of the rawest version
-    of the Tetris game -- without PPO-CNNs
-    and PPO-ViTs."""
+    of a game -- without PPO-CNNs and PPO-ViTs."""
 
     env.reset()
 
