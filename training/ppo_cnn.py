@@ -10,6 +10,9 @@ from models.actor_critic import ActorCritic
 from models.cnn_encoder import CNNEncoder
 
 
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+
 def make_tetris_env():
     env = gym.make("ALE/Tetris-v5", render_mode=None)
 
@@ -26,11 +29,9 @@ def make_tetris_env():
 
 
 def preprocess(obs):
-    """Convert LazyFrames to a normalized batched tensor."""
-
-    obs = np.array(obs)  # LazyFrames -> ndarray
+    obs = np.array(obs)
     obs = torch.tensor(obs, dtype=torch.float32) / 255.0
-    return obs.unsqueeze(0)  # [1, 4, 84, 84]
+    return obs.unsqueeze(0).to(device)
 
 
 def run(steps=10000, log_path="../logs/ppo_cnn.csv"):
@@ -42,6 +43,7 @@ def run(steps=10000, log_path="../logs/ppo_cnn.csv"):
 
     encoder = CNNEncoder()
     model = ActorCritic(encoder, feature_dim=512, num_actions=num_actions)
+    model.to(device)
 
     agent = PPOAgent(
         model=model,

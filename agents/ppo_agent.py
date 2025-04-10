@@ -5,6 +5,10 @@ from collections import deque
 import os
 import csv
 
+
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+
 class RolloutBuffer:
     def __init__(self):
         self.states = []
@@ -83,11 +87,11 @@ class PPOAgent:
                 )
                 returns = [adv + val for adv, val in zip(advantages, buffer.values)]
 
-                states = torch.stack([preprocess(s).squeeze(0) for s in buffer.states])
-                actions = torch.LongTensor(buffer.actions)
-                old_logprobs = torch.FloatTensor(buffer.logprobs)
-                returns = torch.FloatTensor(returns)
-                advantages = torch.FloatTensor(advantages)
+                states = torch.stack([preprocess(s).squeeze(0) for s in buffer.states]).to(device)
+                actions = torch.LongTensor(buffer.actions).to(device)
+                old_logprobs = torch.FloatTensor(buffer.logprobs).to(device)
+                returns = torch.FloatTensor(returns).to(device)
+                advantages = torch.FloatTensor(advantages).to(device)
                 advantages = (advantages - advantages.mean()) / (advantages.std() + 1e-8)
 
                 for _ in range(self.k_epochs):
@@ -128,3 +132,7 @@ class PPOAgent:
                 if (t + 1) % save_every == 0:
                     ckpt_path = f"checkpoints/ppo_cnn_step_{t + 1}.pt"
                     torch.save(self.model.state_dict(), ckpt_path)
+
+
+if __name__ == '__main__':
+    print("Using device:", device)
