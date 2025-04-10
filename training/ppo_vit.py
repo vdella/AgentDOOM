@@ -31,9 +31,12 @@ def preprocess(obs):
     return obs.unsqueeze(0)
 
 
-def run(log_path="../logs/ppo_vit.csv"):
+def run(steps=10000, log_path="../logs/ppo_vit.csv"):
     env = make_tetris_env()
+    obs_space = env.observation_space.shape
     num_actions = env.action_space.n
+
+    print(f"Obs space: {obs_space}, Actions: {num_actions}")
 
     encoder = ViTEncoder(
         img_size=84,
@@ -49,12 +52,12 @@ def run(log_path="../logs/ppo_vit.csv"):
     agent = PPOAgent(
         model=model,
         env=env,
-        total_timesteps=10000  # test run
+        total_timesteps=steps
     )
 
-    agent.train(preprocess, log_path=log_path, save_every=10000)
+    agent.train(preprocess, log_path=log_path)
 
     env.close()
 
 if __name__ == "__main__":
-    run()
+    run(steps=500000)

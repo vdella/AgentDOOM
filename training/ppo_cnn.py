@@ -28,7 +28,7 @@ def make_tetris_env():
 def preprocess(obs):
     """Convert LazyFrames to a normalized batched tensor."""
 
-    obs = np.array(obs)  # LazyFrames → ndarray
+    obs = np.array(obs)  # LazyFrames -> ndarray
     obs = torch.tensor(obs, dtype=torch.float32) / 255.0
     return obs.unsqueeze(0)  # [1, 4, 84, 84]
 
