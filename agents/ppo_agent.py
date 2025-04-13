@@ -121,7 +121,7 @@ class PPOAgent:
 
                 buffer.clear()
                 avg_reward = np.mean(ep_rewards) if ep_rewards else 0
-                print(f"Step: {t+1}, AvgReward (last 100): {avg_reward:.2f}")
+                print(f"Step: {t+1}, AvgReward (last 100): {avg_reward:.4f}")
 
                 # Log reward to CSV
                 with open(log_path, "a", newline="") as f:
