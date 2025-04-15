@@ -52,7 +52,7 @@ class PPOAgent:
             action = dist.sample()
             return action.item(), dist.log_prob(action).item(), value.item()
 
-    def train(self, preprocess, log_path, save_every=10000):
+    def train(self, preprocess, log_path, save_every=2048, checkpoint_path):
 
         buffer = RolloutBuffer()
         state, _ = self.env.reset()
@@ -130,7 +130,7 @@ class PPOAgent:
 
                 # Save checkpoint
                 if (t + 1) % save_every == 0:
-                    ckpt_path = f"checkpoints/ppo_cnn_step_{t + 1}.pt"
+                    ckpt_path = checkpoint_path + f"step_{t + 1}.pt"
                     torch.save(self.model.state_dict(), ckpt_path)
 
 
