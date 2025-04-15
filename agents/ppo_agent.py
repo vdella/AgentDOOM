@@ -3,6 +3,7 @@ import torch.nn.functional as F
 import numpy as np
 from collections import deque
 import os
+from collections import Counter
 import csv
 
 
@@ -52,7 +53,7 @@ class PPOAgent:
             action = dist.sample()
             return action.item(), dist.log_prob(action).item(), value.item()
 
-    def train(self, preprocess, log_path, save_every=2048, checkpoint_path="../checkpoints/"):
+    def train(self, preprocess, log_path, save_every=20480, checkpoint_path="../checkpoints/"):
 
         buffer = RolloutBuffer()
         state, _ = self.env.reset()
@@ -113,15 +114,30 @@ class PPOAgent:
                         surr2 = torch.clamp(ratio, 1 - self.clip_eps, 1 + self.clip_eps) * batch_advantages
                         policy_loss = -torch.min(surr1, surr2).mean()
                         value_loss = F.mse_loss(values.squeeze(), batch_returns)
-                        loss = policy_loss + 0.5 * value_loss - 0.01 * entropy
+                        loss = policy_loss + 0.5 * value_loss - 0.05 * entropy
 
                         self.optimizer.zero_grad()
                         loss.backward()
+
+                        last_entropy = entropy.item()
+                        last_value_loss = value_loss.item()
+
                         self.optimizer.step()
 
                 buffer.clear()
                 avg_reward = np.mean(ep_rewards) if ep_rewards else 0
-                print(f"Step: {t+1}, AvgReward (last 100): {avg_reward:.4f}")
+
+                if 'last_entropy' in locals() and 'last_value_loss' in locals():
+                    print(f"Step: {t+1}, AvgReward: {avg_reward:.4f}, Entropy: {last_entropy:.4f}, ValueLoss: {last_value_loss:.4f}")
+                else:
+                    print(f"Step: {t+1}, AvgReward: {avg_reward:.4f}")
+
+                # ✅ Show action distribution
+                action_counts = Counter(buffer.actions)
+                total_actions = sum(action_counts.values())
+                for act in sorted(action_counts):
+                    pct = 100.0 * action_counts[act] / total_actions
+                    print(f"  Action {act}: {pct:.1f}%")
 
                 # Log reward to CSV
                 with open(log_path, "a", newline="") as f:

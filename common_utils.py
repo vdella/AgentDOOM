@@ -17,7 +17,7 @@ def make_atari_env(env_name="ALE/Breakout-v5"):
         screen_size=84,
         frame_skip=1,
         grayscale_obs=True,
-        terminal_on_life_loss=True
+        terminal_on_life_loss=False
     )
     env = FrameStackObservation(env, stack_size=4)
 
