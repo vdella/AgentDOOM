@@ -52,7 +52,7 @@ class PPOAgent:
             action = dist.sample()
             return action.item(), dist.log_prob(action).item(), value.item()
 
-    def train(self, preprocess, log_path, save_every=2048, checkpoint_path):
+    def train(self, preprocess, log_path, save_every=2048, checkpoint_path="../checkpoints/"):
 
         buffer = RolloutBuffer()
         state, _ = self.env.reset()
