@@ -39,9 +39,9 @@ def run(atari_env,
         total_timesteps=steps
     )
 
-    agent.train(preprocess, log_path=log_path)
+    agent.train(preprocess, log_path=log_path, checkpoint_path=checkpoint_path)
 
     env.close()
 
 if __name__ == "__main__":
-    run(steps=500000, log_path='../logs/ppo_vit_breakout_500k_iterations.csv')
+    run(steps=500000, log_path='../logs/ppo_vit_breakout_500k_iterations.csv', checkpoint_path=f'../checkpoints/')
