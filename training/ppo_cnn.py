@@ -1,41 +1,17 @@
-import gymnasium as gym
-import numpy as np
-import torch
-from gymnasium.wrappers import AtariPreprocessing
-from gymnasium.wrappers import FrameStackObservation
-import ale_py
-
 from agents.ppo_agent import PPOAgent
 from models.actor_critic import ActorCritic
 from models.cnn_encoder import CNNEncoder
 
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+from common_utils import *
 
 
-def make_tetris_env():
-    env = gym.make("ALE/Breakout-v5", render_mode=None)
+def run(atari_env,
+        steps=1000000,
+        log_path="../logs/ppo_cnn.csv",
+        checkpoint_path="../checkpoints/ppo_cnn.pt"):
 
-    env = AtariPreprocessing(
-        env,
-        screen_size=84,
-        frame_skip=1,
-        grayscale_obs=True,
-        terminal_on_life_loss=True
-    )
-    env = FrameStackObservation(env, stack_size=4)
-
-    return env
-
-
-def preprocess(obs):
-    obs = np.array(obs)
-    obs = torch.tensor(obs, dtype=torch.float32) / 255.0
-    return obs.unsqueeze(0).to(device)
-
-
-def run(steps=10000, log_path="../logs/ppo_cnn.csv"):
-    env = make_tetris_env()
+    env = make_atari_env(atari_env)
     obs_space = env.observation_space.shape
     num_actions = env.action_space.n
 
@@ -57,10 +33,12 @@ def run(steps=10000, log_path="../logs/ppo_cnn.csv"):
         total_timesteps=steps
     )
 
-    agent.train(preprocess, log_path=log_path)
+    agent.train(preprocess, log_path=log_path, checkpoint_path=checkpoint_path)
 
     env.close()
 
 
 if __name__ == "__main__":
-    run(steps=1000000, log_path='../logs/ppo_cnn_breakout_1mi_iterations.csv')
+    run(steps=2000000,
+        log_path='../logs/ppo_cnn_breakout_2mi_iterations.csv',
+        checkpoint_path='../checkpoints/ppo_cnn/breakout/2mi/')

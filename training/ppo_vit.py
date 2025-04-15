@@ -1,41 +1,15 @@
-import torch
-import numpy as np
-import gymnasium as gym
-from gymnasium.wrappers import AtariPreprocessing
-from gymnasium.wrappers import FrameStackObservation
-import ale_py
-
-from models.vit_encoder import ViTEncoder
-from models.actor_critic import ActorCritic
 from agents.ppo_agent import PPOAgent
+from models.actor_critic import ActorCritic
+from models.vit_encoder import ViTEncoder
+from common_utils import *
 
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+def run(atari_env,
+        steps=1000000,
+        log_path="../logs/ppo_vit_breakout.csv",
+        checkpoint_path="../checkpoints/ppo_vit.pt"):
 
-
-def make_tetris_env():
-    env = gym.make("ALE/Breakout-v5", render_mode=None)
-
-    env = AtariPreprocessing(
-        env,
-        screen_size=84,
-        frame_skip=1,
-        grayscale_obs=True,
-        terminal_on_life_loss=True
-    )
-    env = FrameStackObservation(env, stack_size=4)
-
-    return env
-
-
-def preprocess(obs):
-    obs = np.array(obs)
-    obs = torch.tensor(obs, dtype=torch.float32) / 255.0
-    return obs.unsqueeze(0).to(device)
-
-
-def run(steps=10000, log_path="../logs/ppo_vit_breakout.csv"):
-    env = make_tetris_env()
+    env = make_atari_env(atari_env)
     obs_space = env.observation_space.shape
     num_actions = env.action_space.n
 
@@ -45,17 +19,23 @@ def run(steps=10000, log_path="../logs/ppo_vit_breakout.csv"):
         img_size=84,
         patch_size=6,
         in_channels=4,
-        emb_dim=256,
+        emb_dim=512,
         depth=4,
         num_heads=4,
         dropout=0.1
     )
-    model = ActorCritic(encoder, feature_dim=256, num_actions=num_actions)
+    model = ActorCritic(encoder, feature_dim=512, num_actions=num_actions)
     model.to(device)
 
     agent = PPOAgent(
         model=model,
         env=env,
+        lr=2.5e-4,
+        gamma=0.99,
+        lam=0.95,
+        clip_eps=0.2,
+        k_epochs=4,
+        batch_size=64,
         total_timesteps=steps
     )
 
