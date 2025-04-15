@@ -2,7 +2,7 @@ import gymnasium as gym
 import ale_py
 
 
-env = gym.make("ALE/Tetris-v5", render_mode="human")
+env = gym.make("ALE/Breakout-v5", render_mode="human")
 epochs = 10000
 
 

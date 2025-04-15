@@ -14,7 +14,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 def make_tetris_env():
-    env = gym.make("ALE/Tetris-v5", render_mode=None)
+    env = gym.make("ALE/Breakout-v5", render_mode=None)
 
     env = AtariPreprocessing(
         env,
@@ -63,4 +63,4 @@ def run(steps=10000, log_path="../logs/ppo_cnn.csv"):
 
 
 if __name__ == "__main__":
-    run(steps=500000)
+    run(steps=1000000, log_path='../logs/ppo_cnn_breakout_1mi_iterations.csv')
