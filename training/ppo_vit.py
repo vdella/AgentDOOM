@@ -4,7 +4,7 @@ from models.vit_encoder import ViTEncoder
 from common_utils import *
 
 
-def run(atari_env,
+def run(atari_env="ALE/Breakout-v5",
         steps=1000000,
         log_path="../logs/ppo_vit_breakout.csv",
         checkpoint_path="../checkpoints/ppo_vit.pt"):
@@ -44,4 +44,6 @@ def run(atari_env,
     env.close()
 
 if __name__ == "__main__":
-    run(steps=500000, log_path='../logs/ppo_vit_breakout_500k_iterations.csv', checkpoint_path=f'../checkpoints/')
+    run(steps=500000,
+        log_path='../logs/ppo_vit_breakout_500k_iterations.csv',
+        checkpoint_path=f'../checkpoints/')

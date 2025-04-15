@@ -6,7 +6,7 @@ from models.cnn_encoder import CNNEncoder
 from common_utils import *
 
 
-def run(atari_env,
+def run(atari_env="ALE/Breakout-v5",
         steps=1000000,
         log_path="../logs/ppo_cnn.csv",
         checkpoint_path="../checkpoints/ppo_cnn.pt"):
