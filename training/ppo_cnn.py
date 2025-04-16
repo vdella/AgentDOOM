@@ -24,7 +24,7 @@ def run(atari_env="ALE/Breakout-v5",
     agent = PPOAgent(
         model=model,
         env=env,
-        lr=1e-6,
+        lr=2.5e-4,
         gamma=0.99,
         lam=0.95,
         clip_eps=0.2,
@@ -39,33 +39,33 @@ def run(atari_env="ALE/Breakout-v5",
 
 
 if __name__ == "__main__":
-    run(atari_env='ALE/Pong-v5',
+    # run(atari_env='ALE/Pong-v5',
+    #     steps=500000,
+    #     log_path='../logs/lr_1e-6_clip_02/ppo_cnn_pong_500k_iterations.csv',
+    #     checkpoint_path='../checkpoints/ppo_cnn/pong/500k/')
+    #
+    # run(atari_env='ALE/Pong-v5',
+    #     steps=1000000,
+    #     log_path='../logs/lr_1e-6_clip_02/ppo_cnn_pong_1mi_iterations.csv',
+    #     checkpoint_path='../checkpoints/ppo_cnn/pong/1mi/')
+    #
+    # run(atari_env='ALE/Pong-v5',
+    #     steps=2000000,
+    #     log_path='../logs/lr_1e-6_clip_02/ppo_cnn_pong_2mi_iterations.csv',
+    #     checkpoint_path='../checkpoints/ppo_cnn/pong/2mi/')
+
+    run(atari_env='ALE/Breakout-v5',
         steps=500000,
-        log_path='../logs/lr_1e-6_clip_02/ppo_cnn_pong_500k_iterations.csv',
-        checkpoint_path='../checkpoints/ppo_cnn/pong/500k/')
-
-    run(atari_env='ALE/Pong-v5',
-        steps=1000000,
-        log_path='../logs/lr_1e-6_clip_02/ppo_cnn_pong_1mi_iterations.csv',
-        checkpoint_path='../checkpoints/ppo_cnn/pong/1mi/')
-
-    run(atari_env='ALE/Pong-v5',
-        steps=2000000,
-        log_path='../logs/lr_1e-6_clip_02/ppo_cnn_pong_2mi_iterations.csv',
-        checkpoint_path='../checkpoints/ppo_cnn/pong/2mi/')
-
-    run(atari_env='ALE/Breakout-v5',
-        steps=500000,
-        log_path='../logs/lr_1e-6_clip_02/ppo_cnn_breakout_500k_iterations.csv',
-        checkpoint_path='../checkpoints/ppo_cnn/breakout/500k/')
+        log_path='../logs/lr_25e-4_clip_02/ppo_cnn_breakout_500k_iterations.csv',
+        checkpoint_path='../checkpoints/ppo_cnn/breakout/lr_25e-4_clip_02/500k/')
 
     run(atari_env='ALE/Breakout-v5',
         steps=1000000,
-        log_path='../logs/lr_1e-6_clip_02/ppo_cnn_breakout_1mi_iterations.csv',
-        checkpoint_path='../checkpoints/ppo_cnn/breakout/1mi/')
+        log_path='../logs/lr_25e-4_clip_02/ppo_cnn_breakout_1mi_iterations.csv',
+        checkpoint_path='../checkpoints/ppo_cnn/breakout/lr_25e-4_clip_02/1mi/')
 
     run(atari_env='ALE/Breakout-v5',
         steps=2000000,
-        log_path='../logs/lr_1e-6_clip_02/ppo_cnn_breakout_2mi_iterations.csv',
-        checkpoint_path='../checkpoints/ppo_cnn/breakout/2mi/')
+        log_path='../logs/lr_25e-4_clip_02/ppo_cnn_breakout_2mi_iterations.csv',
+        checkpoint_path='../checkpoints/ppo_cnn/breakout/lr_25e-4_clip_02/2mi/')
 
