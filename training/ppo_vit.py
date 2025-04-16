@@ -30,7 +30,7 @@ def run(atari_env="ALE/Breakout-v5",
     agent = PPOAgent(
         model=model,
         env=env,
-        lr=2.5e-4,
+        lr=1e-6,
         gamma=0.99,
         lam=0.95,
         clip_eps=0.2,
@@ -44,6 +44,32 @@ def run(atari_env="ALE/Breakout-v5",
     env.close()
 
 if __name__ == "__main__":
-    run(steps=500000,
+    run(atari_env='ALE/Pong-v5',
+        steps=500000,
+        log_path='../logs/ppo_vit_pong_500k_iterations.csv',
+        checkpoint_path='../checkpoints/ppo_vit/pong/500k/')
+
+    run(atari_env='ALE/Pong-v5',
+        steps=1000000,
+        log_path='../logs/ppo_vit_pong_1mi_iterations.csv',
+        checkpoint_path='../checkpoints/ppo_vit/pong/1mi/')
+
+    run(atari_env='ALE/Pong-v5',
+        steps=2000000,
+        log_path='../logs/ppo_vit_pong_2mi_iterations.csv',
+        checkpoint_path='../checkpoints/ppo_vit/pong/2mi/')
+
+    run(atari_env='ALE/Breakout-v5',
+        steps=500000,
         log_path='../logs/ppo_vit_breakout_500k_iterations.csv',
-        checkpoint_path=f'../checkpoints/')
+        checkpoint_path='../checkpoints/ppo_vit/breakout/500k/')
+
+    run(atari_env='ALE/Breakout-v5',
+        steps=1000000,
+        log_path='../logs/ppo_vit_breakout_1mi_iterations.csv',
+        checkpoint_path='../checkpoints/ppo_vit/breakout/1mi/')
+
+    run(atari_env='ALE/Breakout-v5',
+        steps=2000000,
+        log_path='../logs/ppo_vit_breakout_2mi_iterations.csv',
+        checkpoint_path='../checkpoints/ppo_vit/breakout/2mi/')
