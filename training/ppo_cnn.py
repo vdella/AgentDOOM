@@ -41,31 +41,31 @@ def run(atari_env="ALE/Breakout-v5",
 if __name__ == "__main__":
     run(atari_env='ALE/Pong-v5',
         steps=500000,
-        log_path='../logs/ppo_cnn_pong_500k_iterations.csv',
+        log_path='../logs/lr_1e-6_clip_02/ppo_cnn_pong_500k_iterations.csv',
         checkpoint_path='../checkpoints/ppo_cnn/pong/500k/')
 
     run(atari_env='ALE/Pong-v5',
         steps=1000000,
-        log_path='../logs/ppo_cnn_pong_1mi_iterations.csv',
+        log_path='../logs/lr_1e-6_clip_02/ppo_cnn_pong_1mi_iterations.csv',
         checkpoint_path='../checkpoints/ppo_cnn/pong/1mi/')
 
     run(atari_env='ALE/Pong-v5',
         steps=2000000,
-        log_path='../logs/ppo_cnn_pong_2mi_iterations.csv',
+        log_path='../logs/lr_1e-6_clip_02/ppo_cnn_pong_2mi_iterations.csv',
         checkpoint_path='../checkpoints/ppo_cnn/pong/2mi/')
 
     run(atari_env='ALE/Breakout-v5',
         steps=500000,
-        log_path='../logs/ppo_cnn_breakout_500k_iterations.csv',
+        log_path='../logs/lr_1e-6_clip_02/ppo_cnn_breakout_500k_iterations.csv',
         checkpoint_path='../checkpoints/ppo_cnn/breakout/500k/')
 
     run(atari_env='ALE/Breakout-v5',
         steps=1000000,
-        log_path='../logs/ppo_cnn_breakout_1mi_iterations.csv',
+        log_path='../logs/lr_1e-6_clip_02/ppo_cnn_breakout_1mi_iterations.csv',
         checkpoint_path='../checkpoints/ppo_cnn/breakout/1mi/')
 
     run(atari_env='ALE/Breakout-v5',
         steps=2000000,
-        log_path='../logs/ppo_cnn_breakout_2mi_iterations.csv',
+        log_path='../logs/lr_1e-6_clip_02/ppo_cnn_breakout_2mi_iterations.csv',
         checkpoint_path='../checkpoints/ppo_cnn/breakout/2mi/')
 
