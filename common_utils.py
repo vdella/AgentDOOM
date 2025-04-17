@@ -1,6 +1,8 @@
 import torch
 import numpy as np
+import os
 import gymnasium as gym
+import random
 from gymnasium.wrappers import AtariPreprocessing
 from gymnasium.wrappers import FrameStackObservation
 import ale_py
@@ -9,8 +11,18 @@ import ale_py
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
-def make_atari_env(env_name="ALE/Breakout-v5"):
-    env = gym.make(env_name, render_mode=None)
+def set_seed(seed=42):
+    os.environ["PYTHONHASHSEED"] = str(seed)
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+    torch.backends.cudnn.deterministic = True  # ensures deterministic conv ops
+    torch.backends.cudnn.benchmark = False     # disables autotuner
+
+
+def make_atari_env(env_name="ALE/Breakout-v5", render_mode=None):
+    env = gym.make(env_name, render_mode=render_mode)
 
     env = AtariPreprocessing(
         env,
