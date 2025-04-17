@@ -4,6 +4,9 @@ from models.vit_encoder import ViTEncoder
 from common_utils import *
 
 
+set_seed()
+
+
 def run(atari_env="ALE/Breakout-v5",
         steps=1000000,
         log_path="../logs/ppo_vit_breakout.csv",
