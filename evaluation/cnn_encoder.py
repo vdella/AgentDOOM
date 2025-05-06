@@ -46,4 +46,15 @@ def generate_gif(checkpoint_path, gif_name="../gifs/ppo_breakout.gif"):
 
 
 if __name__ == "__main__":
-    generate_gif("../checkpoints/ppo_cnn/breakout/lr_1e-4_clip_01/2mi/final.pt")
+    from PIL import Image
+
+    # Open the GIF
+    gif = Image.open("../gifs/ppo_breakout.gif")
+
+    # Select the desired frame (e.g., the first one)
+    frame_number = 0
+    gif.seek(frame_number)
+
+    # Save that frame as an image
+    gif.save("frame_0.png")
+
