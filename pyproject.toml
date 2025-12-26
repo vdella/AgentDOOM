@@ -1,0 +1,14 @@
+[project]
+name = "agentdoom"
+version = "0.1.0"
+description = "Training of CNN and ViT encoders to fit an ActorCritic architecture in order to train a PPO agent to play the Atari 2600 Breakout game."
+requires-python = ">=3.12"
+dependencies = [
+    "ale-py>=0.11.2",
+    "gymnasium~=1.1.1",
+    "matplotlib~=3.10.1",
+    "numpy~=2.2.4",
+    "pandas~=2.2.3",
+    "pillow~=11.2.1",
+    "torch~=2.6.0",
+]
