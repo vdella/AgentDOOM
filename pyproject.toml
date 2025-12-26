@@ -8,7 +8,14 @@ dependencies = [
     "gymnasium~=1.1.1",
     "matplotlib~=3.10.1",
     "numpy~=2.2.4",
+    "opencv-python>=4.12.0.88",
     "pandas~=2.2.3",
     "pillow~=11.2.1",
+    "tensorboard>=2.20.0",
     "torch~=2.6.0",
+]
+
+[dependency-groups]
+dev = [
+    "pip-check-reqs>=2.5.5",
 ]
